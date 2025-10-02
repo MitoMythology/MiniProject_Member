@@ -8,13 +8,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckApproved
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
+        if ($request->user() && !$request->user()->isApproved()) {
+            auth()->logout();
+            return redirect()->route('login')->with('error', 'บัญชีของคุณยังไม่ได้รับการอนุมัติ');
+        }
+
         return $next($request);
     }
 }
