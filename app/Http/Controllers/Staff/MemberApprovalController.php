@@ -57,7 +57,7 @@ class MemberApprovalController extends Controller
             abort(403, 'คุณสามารถแก้ไขเฉพาะ Member เท่านั้น');
         }
 
-        return view('staff.members.edit', compact('user'));
+        return view('staff.member.edit', compact('user'));
     }
 
     public function update(Request $request, User $user)
