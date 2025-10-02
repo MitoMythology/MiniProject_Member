@@ -26,6 +26,18 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
+        // ตรวจสอบสถานะผู้ใช้
+        // ใช้ optional() เพื่อป้องกันการเรียก property บนค่า null
+        if (optional(Auth::user())->status !== 'approved') {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            
+            return redirect()->route('login')->withErrors([
+                'email' => 'บัญชีของคุณยังไม่ได้รับการอนุมัติจากเจ้าหน้าที่ กรุณารอการอนุมัติ',
+            ]);
+        }
+
         $request->session()->regenerate();
 
         return redirect()->intended(route('dashboard', absolute: false));

@@ -20,7 +20,7 @@ class MemberApprovalController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
-        return view('staff.members.index', compact('pendingMembers', 'allMembers'));
+        return view('staff.member.index', compact('pendingMembers', 'allMembers'));
     }
 
     public function approve(User $user)

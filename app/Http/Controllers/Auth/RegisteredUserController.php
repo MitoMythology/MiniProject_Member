@@ -39,12 +39,13 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'member',
+            'status' => 'pending', // สมาชิกใหม่จะอยู่ในสถานะ pending
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+        // ไม่ login อัตโนมัติ แต่ redirect ไปหน้า login พร้อมข้อความ
+        return redirect()->route('login')->with('status', 'ลงทะเบียนสำเร็จ! กรุณารอการอนุมัติจากเจ้าหน้าที่');
     }
 }
